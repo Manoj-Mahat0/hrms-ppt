@@ -1,0 +1,2555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VetanSetu — Next-Gen Interactive 3D Pitch Deck (13 Slides)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            vetan: {
+              yellow: "#FACC15",
+              gold: "#EAB308",
+              amber: "#F59E0B",
+              ink: "#0D0D11",
+              card: "#16161D",
+              cream: "#FFFBEB"
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --yellow: #facc15;
+      --gold: #eab308;
+      --ink: #0d0d11;
+      --card-bg: rgba(22, 22, 29, 0.88);
+      --card-border: rgba(250, 204, 21, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(ellipse at 50% 0%, #2b2206 0%, #0d0d11 50%, #050508 100%);
+      color: #fefce8;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-x: hidden;
+      perspective: 1200px;
+    }
+
+    /* Ambient Cyber Mesh */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: 
+        radial-gradient(rgba(250, 204, 21, 0.12) 1px, transparent 1px),
+        linear-gradient(to right, rgba(250, 204, 21, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(250, 204, 21, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px, 64px 64px, 64px 64px;
+      z-index: 0;
+      opacity: 0.7;
+    }
+
+    .deck-container {
+      width: 100%;
+      max-width: 1240px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .deck-container:fullscreen {
+      width: 100%;
+      max-width: none;
+      height: 100vh;
+      padding: 18px 28px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 12px;
+      background: #0d0d11;
+      overflow: hidden;
+    }
+
+    .deck-container:fullscreen .slide-wrapper {
+      min-height: 0;
+      height: 100%;
+      padding-top: 0;
+    }
+
+    .deck-container:fullscreen .speaker-notes-box {
+      display: none;
+    }
+
+    /* Top HUD Navigation Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(18, 18, 24, 0.85);
+      backdrop-filter: blur(16px);
+      padding: 12px 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(250, 204, 21, 0.35);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(250, 204, 21, 0.1);
+    }
+
+    .brand-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #facc15;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-shadow: 0 0 15px rgba(250, 204, 21, 0.4);
+    }
+
+    .top-bar .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    button {
+      background: #23232c;
+      color: #fefce8;
+      border: 1px solid rgba(250, 204, 21, 0.2);
+      padding: 7px 15px;
+      border-radius: 9px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    button:hover {
+      background: #32323f;
+      border-color: #facc15;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(250, 204, 21, 0.2);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, #facc15, #f59e0b);
+      color: #0d0d11;
+      border: none;
+      font-weight: 800;
+    }
+
+    .btn-accent:hover {
+      background: linear-gradient(135deg, #fef08a, #facc15);
+      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.4);
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .btn-credits {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: #ffffff;
+      border: none;
+    }
+    .btn-credits:hover {
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+    }
+
+    /* Progress Fill & Dots */
+    .deck-progress {
+      height: 4px;
+      background: #2a2a36;
+      border-radius: 99px;
+      overflow: hidden;
+      flex: 1;
+      margin: 0 14px;
+    }
+
+    .deck-progress-fill {
+      height: 100%;
+      width: 8.33%;
+      background: linear-gradient(90deg, #facc15, #f59e0b);
+      transition: width 0.35s ease;
+      box-shadow: 0 0 12px #facc15;
+    }
+
+    .slide-dots {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .slide-dot {
+      width: 7px;
+      height: 7px;
+      padding: 0;
+      border: 0;
+      border-radius: 99px;
+      background: #434354;
+      transition: all 0.25s;
+    }
+
+    .slide-dot.active {
+      width: 20px;
+      background: #facc15;
+      box-shadow: 0 0 10px #facc15;
+    }
+
+    /* Slide Frame - 16:9 ratio */
+    .slide-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 widescreen */
+      background: #111117;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(250, 204, 21, 0.3);
+      transform-style: preserve-3d;
+    }
+
+    .slide-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 38px 52px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+      background: 
+        radial-gradient(circle at 88% 8%, rgba(250, 204, 21, 0.14) 0%, transparent 40%),
+        radial-gradient(circle at 5% 95%, rgba(245, 158, 11, 0.12) 0%, transparent 45%),
+        linear-gradient(135deg, #16161e 0%, #0e0e13 100%);
+      transform: scale(0.98);
+    }
+
+    .slide-content.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+      z-index: 2;
+    }
+
+    .slide-content.transition-in-forward {
+      animation: slideEnterForward 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .slide-content.transition-in-backward {
+      animation: slideEnterBackward 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .slide-content.transition-out-forward,
+    .slide-content.transition-out-backward {
+      visibility: visible;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .slide-content.transition-out-forward {
+      animation: slideExitForward 320ms ease both;
+    }
+
+    .slide-content.transition-out-backward {
+      animation: slideExitBackward 320ms ease both;
+    }
+
+    @keyframes slideEnterForward {
+      from { opacity: 0; transform: translateX(3.5%) scale(0.985); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes slideEnterBackward {
+      from { opacity: 0; transform: translateX(-3.5%) scale(0.985); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes slideExitForward {
+      from { opacity: 1; transform: translateX(0) scale(1); }
+      to { opacity: 0; transform: translateX(-2.5%) scale(0.99); }
+    }
+    @keyframes slideExitBackward {
+      from { opacity: 1; transform: translateX(0) scale(1); }
+      to { opacity: 0; transform: translateX(2.5%) scale(0.99); }
+    }
+
+    .slide-header {
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: rgba(250, 204, 21, 0.12);
+      color: #fde047;
+      border: 1px solid rgba(250, 204, 21, 0.35);
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: #fffdf5;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+    }
+
+    .slide-subtitle {
+      font-size: 15px;
+      font-weight: 500;
+      color: #cbd5e1;
+      margin-top: 4px;
+    }
+
+    .slide-header::after {
+      content: "";
+      display: block;
+      width: 70px;
+      height: 3px;
+      border-radius: 8px;
+      margin-top: 10px;
+      background: linear-gradient(90deg, #facc15, #f59e0b, transparent);
+      box-shadow: 0 0 10px #facc15;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* 3D Game-Like HUD Tilt Cards */
+    .hud-card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      transform-style: preserve-3d;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    /* Futuristic HUD Corner Reticles */
+    .hud-card::before, .hud-card::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      pointer-events: none;
+      transition: all 0.3s;
+    }
+    .hud-card::before {
+      top: 4px;
+      left: 4px;
+      border-top: 2px solid #facc15;
+      border-left: 2px solid #facc15;
+    }
+    .hud-card::after {
+      bottom: 4px;
+      right: 4px;
+      border-bottom: 2px solid #facc15;
+      border-right: 2px solid #facc15;
+    }
+
+    .hud-card:hover {
+      border-color: #facc15;
+      box-shadow: 0 18px 45px rgba(250, 204, 21, 0.2), 0 0 20px rgba(250, 204, 21, 0.15);
+    }
+    .hud-card:hover::before, .hud-card:hover::after {
+      width: 14px;
+      height: 14px;
+      border-color: #fef08a;
+    }
+
+    /* Laser Scanline on hover */
+    .hud-card .laser-scan {
+      position: absolute;
+      top: -100%;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent, rgba(250, 204, 21, 0.18), transparent);
+      pointer-events: none;
+      transition: transform 0.6s ease;
+    }
+    .hud-card:hover .laser-scan {
+      transform: translateY(200%);
+    }
+
+    .hud-card h4 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fde047;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transform: translateZ(20px);
+    }
+
+    .hud-card p {
+      font-size: 13px;
+      color: #d1d5db;
+      line-height: 1.5;
+      transform: translateZ(10px);
+    }
+
+    .click-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 10px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(250, 204, 21, 0.12);
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      color: #fde047;
+      transition: all 0.2s;
+    }
+    .hud-card:hover .click-tag {
+      background: #facc15;
+      color: #0d0d11;
+      transform: translateZ(25px);
+    }
+
+    /* Grids */
+    .grid-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .grid-3-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .grid-4-col {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .grid-split {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    /* Interactive Screenshot Card */
+    .screenshot-frame {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(250, 204, 21, 0.4);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(250, 204, 21, 0.15);
+      background: #0f0f15;
+      cursor: zoom-in;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
+    }
+    .screenshot-frame:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(250, 204, 21, 0.35);
+      border-color: #fde047;
+    }
+    .screenshot-frame img {
+      width: 100%;
+      height: 100%;
+      max-height: 290px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .screenshot-frame:hover img {
+      transform: scale(1.04);
+    }
+    .screenshot-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(13, 13, 17, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(250, 204, 21, 0.5);
+      color: #fde047;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      z-index: 5;
+    }
+
+    /* 4-Card Visual Grid for Slides 5, 6, 8 */
+    .visual-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .visual-grid .screenshot-frame {
+      height: 146px;
+    }
+    .visual-grid .screenshot-frame img {
+      height: 100%;
+      max-height: none;
+      object-fit: cover;
+    }
+
+    /* Before / After Interactive Comparison Slider */
+    .compare-container {
+      position: relative;
+      width: 100%;
+      height: 260px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(250, 204, 21, 0.35);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+      user-select: none;
+    }
+    .compare-side {
+      position: absolute;
+      inset: 0;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .compare-before {
+      background: linear-gradient(135deg, #2b1111, #180909);
+      color: #fca5a5;
+    }
+    .compare-after {
+      background: linear-gradient(135deg, #1e2815, #0c1808);
+      color: #bef264;
+      clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+      transition: clip-path 0.1s ease-out;
+    }
+    .compare-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      background: #facc15;
+      box-shadow: 0 0 15px #facc15;
+      cursor: ew-resize;
+      transform: translateX(-50%);
+    }
+    .compare-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #facc15;
+      color: #0d0d11;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 14px;
+      box-shadow: 0 0 20px #facc15;
+    }
+
+    /* Expand / Collapse Section */
+    .expand-toggle {
+      margin-top: 10px;
+      background: rgba(250, 204, 21, 0.08);
+      border: 1px dashed rgba(250, 204, 21, 0.35);
+      border-radius: 10px;
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fde047;
+      transition: all 0.2s;
+    }
+    .expand-toggle:hover {
+      background: rgba(250, 204, 21, 0.18);
+      border-color: #facc15;
+    }
+    .expand-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+      opacity: 0;
+      background: rgba(18, 18, 24, 0.95);
+      border-radius: 10px;
+      padding: 0 14px;
+      border: 1px solid transparent;
+      margin-top: 4px;
+      font-size: 11px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .expand-panel.open {
+      max-height: 160px;
+      opacity: 1;
+      padding: 10px 14px;
+      border-color: rgba(250, 204, 21, 0.3);
+    }
+
+    /* Thumbnail Ribbon on Slide 1 */
+    .image-ribbon {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .ribbon-item {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      cursor: pointer;
+      height: 65px;
+      transition: all 0.25s;
+    }
+    .ribbon-item:hover {
+      border-color: #facc15;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(250, 204, 21, 0.25);
+    }
+    .ribbon-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .ribbon-tag {
+      position: absolute;
+      bottom: 3px;
+      left: 4px;
+      background: rgba(13, 13, 17, 0.85);
+      color: #fde047;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* Footer & Meta */
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid rgba(250, 204, 21, 0.15);
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .mini-flow {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .mini-flow span {
+      padding: 5px 9px;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 7px;
+      background: rgba(250, 204, 21, 0.08);
+      color: #fef08a;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .mini-flow b {
+      color: #facc15;
+    }
+
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .metric-strip div {
+      border-radius: 10px;
+      padding: 8px 12px;
+      background: rgba(250, 204, 21, 0.08);
+      border: 1px solid rgba(250, 204, 21, 0.2);
+      text-align: center;
+    }
+    .metric-strip strong {
+      display: block;
+      color: #fde047;
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .metric-strip small {
+      color: #cbd5e1;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .platform-overview {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+    .overview-panel {
+      padding: 14px 16px;
+      border: 1px solid rgba(250, 204, 21, 0.22);
+      border-radius: 12px;
+      background: rgba(15, 15, 21, 0.72);
+    }
+    .overview-panel h3 {
+      margin-bottom: 8px;
+      color: #fde047;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .overview-panel p,
+    .overview-panel li {
+      color: #d1d5db;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    .overview-panel ul {
+      display: grid;
+      gap: 4px;
+      padding-left: 16px;
+    }
+    .overview-panel .overview-count {
+      display: block;
+      margin-bottom: 4px;
+      color: #fef08a;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 25px;
+      font-weight: 800;
+    }
+    .overview-note {
+      margin-top: 12px;
+      color: #94a3b8;
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .stat-number {
+      font-size: 34px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #fef08a, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    /* Speaker Notes Box */
+    .speaker-notes-box {
+      background: #15151c;
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      border-radius: 14px;
+      padding: 14px 20px;
+      font-size: 13px;
+      color: #d1d5db;
+      line-height: 1.6;
+    }
+    .speaker-notes-box strong {
+      color: #fde047;
+    }
+
+    /* LIGHTBOX ZOOM MODAL */
+    .lightbox-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(5, 5, 8, 0.94);
+      backdrop-filter: blur(16px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+    .lightbox-modal.active {
+      display: flex;
+      animation: modalFadeIn 0.25s ease both;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 90vh;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(250, 204, 21, 0.5);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(250, 204, 21, 0.3);
+    }
+    .lightbox-content img {
+      width: 100%;
+      height: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(13, 13, 17, 0.85);
+      border: 1px solid rgba(250, 204, 21, 0.5);
+      color: #facc15;
+      font-size: 24px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lightbox-close:hover {
+      background: #facc15;
+      color: #0d0d11;
+      transform: scale(1.1);
+    }
+    .lightbox-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+      padding: 16px 24px;
+      color: #fefce8;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    /* MOVIE-LIKE END CREDITS ROLL */
+    .credits-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: #000000;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .credits-overlay.active {
+      display: flex;
+    }
+    .starfield {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px);
+      background-size: 400px 400px;
+      opacity: 0.25;
+      animation: starsDrift 60s linear infinite;
+    }
+    @keyframes starsDrift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-400px); }
+    }
+    .credits-viewport {
+      width: 100%;
+      max-width: 820px;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    }
+    .credits-crawl {
+      position: absolute;
+      width: 100%;
+      top: 100%;
+      animation: movieCrawl 38s linear infinite;
+      text-align: center;
+      color: #fefce8;
+      padding-bottom: 200px;
+    }
+    @keyframes movieCrawl {
+      0% { top: 100%; }
+      100% { top: -280%; }
+    }
+    .credits-crawl h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      color: #facc15;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      text-shadow: 0 0 25px rgba(250, 204, 21, 0.8);
+    }
+    .credits-crawl h3 {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin: 36px 0 10px 0;
+    }
+    .credits-crawl p {
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    .credits-crawl .credit-lead {
+      color: #fde047;
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .credits-hud {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    /* CARD DEEP DIVE MODAL */
+    .detail-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(3, 7, 18, 0.85);
+      backdrop-filter: blur(14px);
+    }
+    .detail-backdrop.open {
+      display: flex;
+      animation: modalFadeIn 0.2s ease both;
+    }
+    .detail-modal {
+      width: min(900px, 100%);
+      max-height: min(88vh, 850px);
+      overflow-y: auto;
+      background: linear-gradient(145deg, #18181b, #111827 65%, #29200a);
+      border: 1px solid rgba(250, 204, 21, 0.45);
+      border-radius: 24px;
+      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.8);
+      color: #f8fafc;
+      animation: modalRise 0.28s ease both;
+    }
+    .detail-hero {
+      padding: 26px 30px;
+      background: radial-gradient(circle at 90% 0%, rgba(250, 204, 21, 0.22), transparent 45%), linear-gradient(120deg, rgba(250, 204, 21, 0.09), transparent);
+      border-bottom: 1px solid rgba(250, 204, 21, 0.18);
+    }
+    .detail-kicker {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fde047;
+      margin-bottom: 8px;
+    }
+    .detail-title {
+      font-size: clamp(20px, 3.5vw, 30px);
+      line-height: 1.15;
+      font-weight: 800;
+      margin: 0 45px 8px 0;
+    }
+    .detail-summary {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #cbd5e1;
+      max-width: 760px;
+    }
+    .detail-close {
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: white;
+      font-size: 22px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+    .detail-content {
+      padding: 22px 30px 28px;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .detail-panel {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.035);
+      border-radius: 14px;
+      padding: 15px;
+    }
+    .detail-panel h4 {
+      color: #fde047;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .detail-panel p, .detail-panel li {
+      color: #cbd5e1;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .detail-panel ul {
+      padding-left: 16px;
+      display: grid;
+      gap: 4px;
+    }
+    .detail-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .detail-step {
+      padding: 6px 10px;
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      background: rgba(250, 204, 21, 0.08);
+      border-radius: 8px;
+      color: #fef3c7;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .detail-note {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-left: 3px solid #facc15;
+      background: rgba(250, 204, 21, 0.07);
+      color: #d1d5db;
+      font-size: 11px;
+      line-height: 1.6;
+      border-radius: 0 8px 8px 0;
+    }
+
+    @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes modalRise { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    @media (max-width: 900px) {
+      .grid-split { grid-template-columns: 1fr; }
+      .screenshot-frame img { max-height: 200px; }
+      .slide-wrapper {
+        min-height: 68vh;
+        padding-top: 0;
+      }
+      .slide-content {
+        position: relative;
+        display: none;
+        min-height: 68vh;
+        padding: 22px;
+      }
+      .slide-content.active {
+        display: flex;
+      }
+      .slide-title { font-size: 24px; }
+      .slide-body { justify-content: flex-start; }
+      .top-bar { align-items: flex-start; }
+      .top-bar .controls { flex-wrap: wrap; justify-content: flex-end; }
+      .deck-progress { flex-basis: 100%; order: 10; }
+    }
+
+    @media (max-width: 600px) {
+      body { justify-content: flex-start; padding: 10px; }
+      .deck-container { gap: 10px; }
+      .top-bar { flex-direction: column; gap: 12px; padding: 12px; }
+      .brand-title { font-size: 15px; }
+      .top-bar .controls { justify-content: flex-start; gap: 6px; }
+      .top-bar .controls button { padding: 7px 9px; font-size: 12px; }
+      .slide-indicator { font-size: 11px; }
+      .slide-dots { max-width: 100%; overflow-x: auto; padding: 4px 0; }
+      .slide-content { padding: 18px; }
+      .slide-title { font-size: clamp(21px, 7vw, 28px); }
+      .slide-subtitle { font-size: 13px; }
+      .grid-2x2,
+      .grid-3-col,
+      .grid-4-col,
+      .grid-cols-2,
+      .visual-grid,
+      .platform-overview,
+      .metric-strip {
+        grid-template-columns: 1fr;
+      }
+      .visual-grid .screenshot-frame { height: auto; aspect-ratio: 16 / 9; }
+      .hud-card { padding: 14px 16px; }
+      .mini-flow { flex-wrap: wrap; justify-content: center; }
+      .slide-footer { gap: 8px; font-size: 10px; }
+      .speaker-notes-box { padding: 12px 14px; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .lightbox-modal { padding: 12px; }
+    }
+
+    button:focus-visible,
+    [role="button"]:focus-visible,
+    [role="slider"]:focus-visible {
+      outline: 3px solid #fef08a;
+      outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deck-container">
+    
+    <!-- Top HUD Navigation -->
+    <div class="top-bar">
+      <div class="brand-title">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-yellow-400 animate-ping"></span>
+        VETANSETU <span>// MASTER PITCH DECK</span>
+      </div>
+
+      <div class="controls">
+        <span id="slideIndicator" class="slide-indicator text-xs font-bold text-yellow-300 uppercase tracking-widest whitespace-nowrap" aria-live="polite">Slide 1 of 13</span>
+        <div class="deck-progress"><div class="deck-progress-fill" id="progressFill"></div></div>
+        <div class="slide-dots" id="slideDots"></div>
+
+        <button id="prevSlideBtn" onclick="prevSlide()" title="Previous slide (Left Arrow)" aria-label="Previous slide">◀</button>
+        <button id="nextSlideBtn" onclick="nextSlide()" title="Next slide (Right Arrow / Space)" aria-label="Next slide">Next ▶</button>
+        <button class="btn-credits" onclick="launchMovieCredits()" title="Play Star-Wars/Hollywood Style Credits Roll">🎬 Credits Roll</button>
+        <button id="soundToggleBtn" onclick="toggleSound()" title="Toggle Cyberpunk Sound FX">🔊 SFX ON</button>
+        <button class="btn-accent" onclick="toggleFullScreen()" title="Toggle Widescreen Fullscreen">⛶ Fullscreen</button>
+      </div>
+    </div>
+
+    <!-- Main 16:9 Presentation Frame -->
+    <div class="slide-wrapper" id="slideFrame" role="region" aria-roledescription="carousel" aria-label="VetanSetu pitch deck">
+
+      <!-- SLIDE 1: COVER & HERO SHOWCASE -->
+      <div class="slide-content active">
+        <div class="slide-header">
+          <span class="slide-badge">⚡ VETANSETU PLATFORM // COMPLETE STACK v1.1</span>
+          <h1 class="slide-title" style="background: linear-gradient(135deg, #ffffff 40%, #facc15 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">VetanSetu (वेतनसेतु)</h1>
+          <p class="slide-subtitle">Enterprise HRMS, Automated Indian Payroll & Mobile Workforce Platform</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-split">
+            <!-- Left Info -->
+            <div class="flex flex-col gap-3">
+              <div class="grid grid-cols-2 gap-3">
+                <div class="hud-card tilt-card" data-tilt>
+                  <div class="laser-scan"></div>
+                  <h4>🎯 Hire to Retire</h4>
+                  <p>Unified lifecycle: Recruitment ATS, paperless KYC onboarding, shifts, assets, and exit FnF.</p>
+                  <span class="click-tag">Details ↗</span>
+                </div>
+                <div class="hud-card tilt-card" data-tilt>
+                  <div class="laser-scan"></div>
+                  <h4>🛡️ 100% Indian Statutory</h4>
+                  <p>Automated PF (ECR format), ESI wage caps, State PT slabs, and dual-regime TDS Form 16.</p>
+                  <span class="click-tag">Details ↗</span>
+                </div>
+              </div>
+
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>📱 Flutter Mobile ESS & Anti-Mock GPS</h4>
+                <p>Cross-platform mobile punch with anti-spoof location detection, device UUID lock, and 15-second breadcrumb live tracking.</p>
+                <span class="click-tag">Explore Technology ↗</span>
+              </div>
+            </div>
+
+            <!-- Right Hero Image Preview -->
+            <div class="screenshot-frame" onclick="openLightbox('images/s1.png', 'VetanSetu Enterprise HRMS & Payroll Dashboard')">
+              <div class="screenshot-badge">🔍 CLICK TO EXPAND UI</div>
+              <img src="images/s1.png" alt="VetanSetu Hero Dashboard">
+            </div>
+          </div>
+        </div>
+
+        <!-- Thumbnail Ribbon -->
+        <div class="image-ribbon">
+          <div class="ribbon-item" onclick="showSlide(3)">
+            <img src="images/s4.png" alt="Live GPS Tracking">
+            <span class="ribbon-tag">GPS Geofence</span>
+          </div>
+          <div class="ribbon-item" onclick="showSlide(4)">
+            <img src="images/s5-1.png" alt="Payroll Operations">
+            <span class="ribbon-tag">Money Path</span>
+          </div>
+          <div class="ribbon-item" onclick="showSlide(6)">
+            <img src="images/s7.png" alt="Recruitment ATS">
+            <span class="ribbon-tag">ATS Kanban</span>
+          </div>
+          <div class="ribbon-item" onclick="showSlide(8)">
+            <img src="images/s9.png" alt="Report catalogue and analytics">
+            <span class="ribbon-tag">180 Reports</span>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>Enterprise SaaS Architecture · Multi-Tenant</span>
+          <span>Slide 1 / 13 · Press Space or → to advance</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 2: THE PROBLEM (WITH BEFORE/AFTER SLIDER) -->
+      <div class="slide-content">
+        <div class="slide-header">
+          <span class="slide-badge">⚠️ THE PROBLEM // OPERATIONAL BOTTLENECKS</span>
+          <h1 class="slide-title">The Operational Chaos in Growing Enterprises</h1>
+          <p class="slide-subtitle">Why traditional spreadsheets and legacy biometric software drain business resources</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-split">
+            <!-- Left Screenshot -->
+            <div class="screenshot-frame" onclick="openLightbox('images/s2.png', 'Operational Chaos & Fragmented Legacy Systems')">
+              <div class="screenshot-badge">LEGACY VS DIGITAL PAYROLL</div>
+              <img src="images/s2.png" alt="Manual payroll compared with digital payroll">
+            </div>
+
+            <!-- Right Interactive Before/After Comparison Slider -->
+            <div class="compare-container" id="compareSlider">
+              <div class="compare-side compare-before">
+                <span class="text-xs font-black uppercase tracking-wider text-red-400 mb-2">❌ LEGACY SPREADSHEETS</span>
+                <p class="text-xs font-bold text-red-200">5-7 Days Lost Every Month</p>
+                <p class="text-xs text-red-300/80 mt-1">Manual formulas, corrupt Excel sheets, biometric proxy punching, compliance penalties.</p>
+                <div class="mt-4 p-2 rounded bg-red-950/60 border border-red-500/40 text-[10px] text-red-200 font-mono">
+                  ERROR: #REF! in Cell H42 (TDS mismatch)<br>STATUS: Late PF filing penalty triggered
+                </div>
+              </div>
+
+              <div class="compare-side compare-after" id="compareAfter">
+                <span class="text-xs font-black uppercase tracking-wider text-yellow-400 mb-2">✨ VETANSETU 1-CLICK ENGINE</span>
+                <p class="text-xs font-bold text-yellow-200">Finished in Under 2 Hours</p>
+                <p class="text-xs text-emerald-200 mt-1">Automated attendance sync, Maker-Checker authorization, 1-click NEFT bank transfer & Tally export.</p>
+                <div class="mt-4 p-2 rounded bg-emerald-950/60 border border-emerald-500/40 text-[10px] text-emerald-200 font-mono">
+                  STATUS: All 240 payslips committed (100% Validated)<br>BANK FILE: HDFC NEFT Generated ✓
+                </div>
+              </div>
+
+              <div class="compare-divider" id="compareDivider">
+                <div class="compare-handle">↔</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>Drag the slider ↔ to compare Legacy vs. VetanSetu</span>
+          <span>Slide 2 / 13</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: THE SOLUTION & ECOSYSTEM -->
+      <div class="slide-content">
+        <div class="slide-header">
+          <span class="slide-badge">💡 THE SOLUTION // UNIFIED ARCHITECTURE</span>
+          <h1 class="slide-title">The VetanSetu Unified Ecosystem</h1>
+          <p class="slide-subtitle">Connecting Employees, HR Teams, and Finance Leaders in One Seamless Loop</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-split">
+            <div class="flex flex-col gap-3">
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>🏛️ 3-Tier Multi-Tenant Architecture</h4>
+                <p>Platform Master Admin (SaaS billing & catalog) ➔ Organization Admin (policies & branches) ➔ HR Managers & Employees.</p>
+                <span class="click-tag">Details ↗</span>
+              </div>
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>🔗 Single Source of Truth</h4>
+                <p>Centralized employee master database linked directly to daily punches, leave balances, and salary computations.</p>
+                <span class="click-tag">Details ↗</span>
+              </div>
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>🛡️ Auditable Financial Money Path</h4>
+                <p>Automated salary calculations governed by Maker-Checker workflows and direct bank disbursement files.</p>
+                <span class="click-tag">Details ↗</span>
+              </div>
+            </div>
+
+            <!-- Right Screenshot / Mobile App Showcase -->
+            <div class="screenshot-frame" onclick="openLightbox('images/s3.png', 'VetanSetu Unified Workforce Ecosystem')">
+              <div class="screenshot-badge">📱 UNIFIED PLATFORM 🔍</div>
+              <img src="images/s3.png" alt="Unified Workforce Platform Ecosystem">
+            </div>
+          </div>
+        </div>
+
+        <div class="mini-flow"><span>Employee Mobile ESS</span><b>→</b><span>HR Approval Workbench</span><b>→</b><span>Payroll Money Path</span><b>→</b><span>Direct Bank NEFT Payout</span></div>
+
+        <div class="slide-footer">
+          <span>VetanSetu Enterprise Platform</span>
+          <span>Slide 3 / 13</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: SMART ATTENDANCE & LIVE GPS MAP -->
+      <div class="slide-content">
+        <div class="slide-header">
+          <span class="slide-badge">📍 TIME & ATTENDANCE // FRAUD PREVENTION</span>
+          <h1 class="slide-title">Smart Attendance & Anti-Fraud GPS Tracking</h1>
+          <p class="slide-subtitle">Eliminating proxy attendance with high-precision GPS geofencing and device UUID binding</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-split">
+            <!-- Left Cards -->
+            <div class="flex flex-col gap-3">
+              <div class="grid grid-cols-2 gap-3">
+                <div class="hud-card tilt-card" data-tilt>
+                  <div class="laser-scan"></div>
+                  <h4>📍 GPS Geofencing & Anti-Mock</h4>
+                  <p>Enforce strict office/plant radius limits. Built-in algorithms detect and reject fake/mocked location apps.</p>
+                  <span class="click-tag">Details ↗</span>
+                </div>
+                <div class="hud-card tilt-card" data-tilt>
+                  <div class="laser-scan"></div>
+                  <h4>🔒 Hardware UUID Binding</h4>
+                  <p>Each employee account is locked to their approved smartphone hardware UUID. Zero buddy-punching permitted.</p>
+                  <span class="click-tag">Details ↗</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div class="hud-card tilt-card" data-tilt>
+                  <div class="laser-scan"></div>
+                  <h4>⚡ Dynamic QR Code Check-In</h4>
+                  <p>Touchless office check-in via encrypted, fast-refreshing dynamic QR codes displayed at office entrances.</p>
+                  <span class="click-tag">Details ↗</span>
+                </div>
+                <div class="hud-card tilt-card" data-tilt>
+                  <div class="laser-scan"></div>
+                  <h4>🗺️ Live Breadcrumb Tracking</h4>
+                  <p>15-second live tracking pings for field sales and logistics staff, visualized directly on OpenStreetMap.</p>
+                  <span class="click-tag">Details ↗</span>
+                </div>
+              </div>
+
+              <!-- Expandable Algorithm Deep-Dive -->
+              <div class="expand-toggle" onclick="toggleExpand('gpsExpand')">
+                <span>[+] Inspect Anti-Spoofing & Geofence Algorithm Specs</span>
+                <span id="gpsExpandIcon">▼</span>
+              </div>
+              <div class="expand-panel" id="gpsExpand">
+                • <strong>Haversine Distance Formula:</strong> Evaluates latitude/longitude against target branch perimeter within 0.5-meter precision.<br>
+                • <strong>Mock Location Filter:</strong> Inspects Android/iOS provider flags (`isMocked == false`), killing spoofing apps immediately.<br>
+                • <strong>Device UUID Fingerprinting:</strong> Validates device hardware signatures against MySQL `employee_devices` table.
+              </div>
+            </div>
+
+            <!-- Right Real Live Map Screenshot -->
+            <div class="screenshot-frame" onclick="openLightbox('images/s4.png', 'VetanSetu GPS Attendance, Geofencing & Device Binding')">
+              <div class="screenshot-badge">🗺️ GPS ATTENDANCE UI 🔍</div>
+              <img src="images/s4.png" alt="Smart Attendance & Geofencing UI">
+            </div>
+          </div>
+        </div>
+
+        <div class="mini-flow"><span>GPS Check</span><b>→</b><span>Device Verification</span><b>→</b><span>Anti-Mock Validation</span><b>→</b><span>Live Attendance Ledger</span></div>
+
+        <div class="slide-footer">
+          <span>Click the map screenshot to enlarge in full-screen lightbox</span>
+          <span>Slide 4 / 13</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 5: AUTOMATED PAYROLL ENGINE & MONEY PATH (4 IMAGES: s5-1 to s5-4) -->
+      <div class="slide-content">
+        <div class="slide-header">
+          <span class="slide-badge">💰 PAYROLL ENGINE // THE MONEY PATH</span>
+          <h1 class="slide-title">Automated Payroll & Maker-Checker Governance</h1>
+          <p class="slide-subtitle">From attendance reconciliation to Maker-Checker approval and direct bank payouts</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-split">
+            <!-- Left Info -->
+            <div class="flex flex-col gap-3">
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>⚙️ Effective-Dated Salary Formulas</h4>
+                <p>Fully configurable Basic, HRA, Special Allowances, Bonuses, Overtime multipliers, and Loan EMI deductions.</p>
+                <span class="click-tag">Details ↗</span>
+              </div>
+
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>🔐 Maker-Checker Authorization</h4>
+                <p>HR compiles and previews the payroll run (Maker); Organization Admin / Finance Director inspects and commits the final run (Checker).</p>
+                <span class="click-tag">Details ↗</span>
+              </div>
+
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>🏦 Bank NEFT Files & Tally ERP Export</h4>
+                <p>1-Click generation of bulk NEFT/RTGS payment transfer files formatted for major banks (HDFC, ICICI, SBI) + Tally journal export.</p>
+                <span class="click-tag">Details ↗</span>
+              </div>
+
+              <!-- Expandable Deep-Dive -->
+              <div class="expand-toggle" onclick="toggleExpand('payrollExpand')">
+                <span>[+] Inspect The 4-Step Money Path Protocol</span>
+                <span id="payrollExpandIcon">▼</span>
+              </div>
+              <div class="expand-panel" id="payrollExpand">
+                1. <strong>Snapshot Attendance:</strong> Locks punch counts, leaves, and overtime hours for the period.<br>
+                2. <strong>Compute Allowances/Deductions:</strong> Evaluates tax regimes, loan EMIs, and statutory contributions.<br>
+                3. <strong>Maker-Checker Commit:</strong> Multi-tiered cryptographic sign-off preventing silent data tampering.<br>
+                4. <strong>Disbursement & PDF Payslips:</strong> Generates bulk bank payout files and encrypted PDF payslips for mobile apps.
+              </div>
+            </div>
+
+            <!-- Right 4-Image Visual Grid (s5-1, s5-2, s5-3, s5-4) -->
+            <div class="visual-grid">
+              <div class="screenshot-frame" onclick="openLightbox('images/s5-1.png', 'Salary Structure & Computation')">
+                <img src="images/s5-1.png" alt="Salary Structure & Computation">
+              </div>
+              <div class="screenshot-frame" onclick="openLightbox('images/s5-2.png', 'Maker-Checker Payroll Verification')">
+                <img src="images/s5-2.png" alt="Maker-Checker Payroll Verification">
+              </div>
+              <div class="screenshot-frame" onclick="openLightbox('images/s5-3.png', 'Automated Payslip & Tax Summary')">
+                <img src="images/s5-3.png" alt="Automated Payslip & Tax Summary">
+              </div>
+              <div class="screenshot-frame" onclick="openLightbox('images/s5-4.png', 'Bank NEFT Bulk Transfer & Payout')">
+                <img src="images/s5-4.png" alt="Bank NEFT Bulk Transfer & Payout">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>Permanent Snapshot Locking · Complete Financial Audit Trail</span>
+          <span>Slide 5 / 13</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 6: 100% INDIAN STATUTORY COMPLIANCE (4 IMAGES: s6-1 to s6-4) -->
+      <div class="slide-content">
+        <div class="slide-header">
+          <span class="slide-badge">⚖️ COMPLIANCE // 100% AUDIT-PROOF</span>
+          <h1 class="slide-title">100% Indian Statutory & Tax Compliance</h1>
+          <p class="slide-subtitle">Pre-configured regulatory intelligence that keeps your business audit-proof</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="visual-grid">
+            <div class="screenshot-frame" onclick="openLightbox('images/s6-1.png', 'Provident Fund (PF) ECR Portal Compliance')">
+              <img src="images/s6-1.png" alt="Provident Fund (PF) ECR Compliance">
+            </div>
+            <div class="screenshot-frame" onclick="openLightbox('images/s6-2.png', 'Employee State Insurance (ESI) Wage Ceilings')">
+              <img src="images/s6-2.png" alt="ESI Wage Ceiling Compliance">
+            </div>
+            <div class="screenshot-frame" onclick="openLightbox('images/s6-3.png', 'State-by-State Professional Tax (PT) Slabs')">
+              <img src="images/s6-3.png" alt="State-by-State Professional Tax">
+            </div>
+            <div class="screenshot-frame" onclick="openLightbox('images/s6-4.png', 'TDS Dual Regime & Automated Form 16')">
+              <img src="images/s6-4.png" alt="TDS & Form 16 Generation">
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-strip">
+          <div><strong>ECR</strong><small>PF TEXT READY</small></div>
+          <div><strong>₹21,000</strong><small>ESI THRESHOLD CHECK</small></div>
+          <div><strong>28 STATES</strong><small>PT PRESETS</small></div>
+          <div><strong>OLD & NEW</strong><small>INCOME TAX REGIMES</small></div>
+        </div>
+
+        <div class="slide-footer">
+          <span>Zero Statutory Penalties · Automatic Rule Versioning</span>
+          <span>Slide 6 / 13</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 7: COMPLETE EMPLOYEE LIFECYCLE (ATS KANBAN SHOWCASE: s7.png) -->
+      <div class="slide-content">
+        <div class="slide-header">
+          <span class="slide-badge">🚀 EMPLOYEE LIFECYCLE // HIRE TO RETIRE</span>
+          <h1 class="slide-title">Complete Lifecycle: Recruitment, Onboarding & Exit</h1>
+          <p class="slide-subtitle">Digital workflows covering recruitment ATS, digital onboarding, asset tracking, and exit FnF</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-split">
+            <!-- Left Info Cards -->
+            <div class="flex flex-col gap-3">
+              <div class="grid grid-cols-2 gap-3">
+                <div class="hud-card tilt-card" data-tilt>
+                  <div class="laser-scan"></div>
+                  <h4>🚀 Recruitment ATS</h4>
+                  <p>Branded public careers portal (`/careers/:slug`), Kanban pipeline, and 1-click hire-to-employee conversion.</p>
+                  <span class="click-tag">Details ↗</span>
+                </div>
+                <div class="hud-card tilt-card" data-tilt>
+                  <div class="laser-scan"></div>
+                  <h4>📁 Paperless Onboarding</h4>
+                  <p>Digital KYC document vault for PAN, Aadhaar, and bank records with automated verification.</p>
+                  <span class="click-tag">Details ↗</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div class="hud-card tilt-card" data-tilt>
+                  <div class="laser-scan"></div>
+                  <h4>💻 Asset & Loan Workbench</h4>
+                  <p>Track hardware asset allocation, manage employee loans with automated payroll EMI deductions.</p>
+                  <span class="click-tag">Details ↗</span>
+                </div>
+                <div class="hud-card tilt-card" data-tilt>
+                  <div class="laser-scan"></div>
+                  <h4>🚪 Exit & Full & Final (FnF)</h4>
+                  <p>Multi-department no-dues clearance checklists, asset recovery, and automated gratuity/leave encashment.</p>
+                  <span class="click-tag">Details ↗</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Real ATS Kanban Screenshot -->
+            <div class="screenshot-frame" onclick="openLightbox('images/s7.png', 'VetanSetu Recruitment ATS Kanban Board & Candidate Pipeline')">
+              <div class="screenshot-badge">📊 ATS KANBAN UI 🔍</div>
+              <img src="images/s7.png" alt="Recruitment pipeline with candidate stages">
+            </div>
+          </div>
+        </div>
+
+        <div class="mini-flow"><span>Attract (Careers Page)</span><b>→</b><span>Screen (Kanban)</span><b>→</b><span>Onboard (KYC)</span><b>→</b><span>Manage (Assets/Loans)</span><b>→</b><span>Exit (FnF Clearance)</span></div>
+
+        <div class="slide-footer">
+          <span>Click the ATS Kanban screenshot to view candidate cards in high definition</span>
+          <span>Slide 7 / 13</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 8: SPECIALIZED INDUSTRY WORKSPACES (4 IMAGES: s8-1 to s8-4) -->
+      <div class="slide-content">
+        <div class="slide-header">
+          <span class="slide-badge">🏭 INDUSTRY WORKSPACES // PRE-CONFIGURED PRESETS</span>
+          <h1 class="slide-title">Specialized Workspaces for Every Industry</h1>
+          <p class="slide-subtitle">Pre-configured operational presets designed for diverse workplace requirements</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="visual-grid">
+            <div class="screenshot-frame" onclick="openLightbox('images/s8-1.png', 'Healthcare & Hospital Ward Rostering')">
+              <div class="screenshot-badge">🏥 HEALTHCARE</div>
+              <img src="images/s8-1.png" alt="Hospital workforce shift roster dashboard">
+            </div>
+            <div class="screenshot-frame" onclick="openLightbox('images/s8-2.png', 'Manufacturing Plants & Plant Operations')">
+              <div class="screenshot-badge">🏭 MANUFACTURING</div>
+              <img src="images/s8-2.png" alt="Manufacturing workforce scheduling dashboard">
+            </div>
+            <div class="screenshot-frame" onclick="openLightbox('images/s8-3.png', 'Retail & Multi-Store Logistics')">
+              <div class="screenshot-badge">🛒 RETAIL & LOGISTICS</div>
+              <img src="images/s8-3.png" alt="Retail and logistics workforce dashboard">
+            </div>
+            <div class="screenshot-frame" onclick="openLightbox('images/s8-4.png', 'Corporate IT & Tech Workspaces')">
+              <div class="screenshot-badge">💻 IT & CORPORATE</div>
+              <img src="images/s8-4.png" alt="Hybrid workforce and attendance dashboard">
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-strip">
+          <div><strong>HOSPITAL</strong><small>WARD ROSTERS</small></div>
+          <div><strong>PLANT</strong><small>OVERTIME POLICIES</small></div>
+          <div><strong>RETAIL</strong><small>MULTI-BRANCH</small></div>
+          <div><strong>TECH</strong><small>KRA / KPI GOALS</small></div>
+        </div>
+
+        <div class="slide-footer">
+          <span>Configurable per company branch via `/workspace/vertical`</span>
+          <span>Slide 8 / 13</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 9: REPORT CATALOGUE & ANALYTICS (s9.png) -->
+      <div class="slide-content">
+        <div class="slide-header">
+          <span class="slide-badge">📊 BUSINESS INTELLIGENCE // REPORT CATALOGUE</span>
+          <h1 class="slide-title">180 Report Definitions & Workforce Intelligence</h1>
+          <p class="slide-subtitle">Real-time visibility into payroll costs, attendance patterns, and compliance health</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-split">
+            <!-- Left Info -->
+            <div class="flex flex-col gap-3">
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>⚡ 180 Report Definitions Across 12 Domains</h4>
+                <p>Catalogued for employee, attendance, leave, payroll, tax, finance, recruitment, performance, lifecycle, assets, analytics, and audit workflows.</p>
+                <span class="click-tag">Details ↗</span>
+              </div>
+
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>🚀 Asynchronous Redis Export Queue</h4>
+                <p>Heavy enterprise reports export in background worker queues without slowing down active web or mobile sessions.</p>
+                <span class="click-tag">Details ↗</span>
+              </div>
+
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>📑 Multi-Format Downloads</h4>
+                <p>1-Click instant export into formatted Excel (.xlsx), CSV, and print-ready PDF formats with custom company branding.</p>
+                <span class="click-tag">Details ↗</span>
+              </div>
+            </div>
+
+            <!-- Right Analytics Screenshot -->
+            <div class="screenshot-frame" onclick="openLightbox('images/s9.png', 'Report Catalogue, Payroll Registers & Workforce Metrics')">
+              <div class="screenshot-badge">📈 ANALYTICS UI 🔍</div>
+              <img src="images/s9.png" alt="Report catalogue and workforce analytics">
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-strip">
+          <div><strong>12</strong><small>REPORT DOMAINS</small></div>
+          <div><strong>180</strong><small>CATALOGUED REPORTS</small></div>
+          <div><strong>CSV / XLSX</strong><small>EXCEL EXPORT</small></div>
+          <div><strong>PDF</strong><small>PRINT READY</small></div>
+        </div>
+
+        <div class="slide-footer">
+          <span>CSV · XLSX · PDF · Role-gated access · Background exports</span>
+          <span>Slide 9 / 13</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 10: ARCHITECTURE, SECURITY & WHITE-LABELING (s10.png) -->
+      <div class="slide-content">
+        <div class="slide-header">
+          <span class="slide-badge">🛡️ SECURITY & INFRASTRUCTURE // WHITE-LABEL ENGINE</span>
+          <h1 class="slide-title">Enterprise Security & White-Label Customization</h1>
+          <p class="slide-subtitle">Modular architecture with strict tenant isolation and full brand personalization</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-split">
+            <!-- Left Info -->
+            <div class="flex flex-col gap-3">
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>🛡️ Row-Level Tenant Isolation</h4>
+                <p>Strict `company_id` tenant scoping across all database tables ensures zero cross-tenant data leaks.</p>
+                <span class="click-tag">Details ↗</span>
+              </div>
+
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>🎨 White-Label Engine</h4>
+                <p>Dynamic company themes (JSON palette), custom logos, branded login pages, and cPanel client domain webmail integration.</p>
+                <span class="click-tag">Details ↗</span>
+              </div>
+
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>🔐 Zero-Trust Authentication</h4>
+                <p>JWT with refresh tokens, OTPless passwordless login, Google SSO, and device risk audit logs.</p>
+                <span class="click-tag">Details ↗</span>
+              </div>
+
+              <!-- Expandable Tech Stack -->
+              <div class="expand-toggle" onclick="toggleExpand('techExpand')">
+                <span>[+] Inspect Production Enterprise Stack & Deployment Topology</span>
+                <span id="techExpandIcon">▼</span>
+              </div>
+              <div class="expand-panel" id="techExpand">
+                • <strong>Backend:</strong> Node.js Modular Monolith (Express) + PM2 Cluster + MySQL 8 relational schema.<br>
+                • <strong>Worker Subsystem:</strong> Redis Queue + BullMQ for async PDF/Excel report rendering and automated email delivery.<br>
+                • <strong>Frontend:</strong> React 18 + Vite + TailwindCSS + shadcn UI components.<br>
+                • <strong>Mobile:</strong> Flutter (Dart) for Android & iOS with native GPS and camera integration.
+              </div>
+            </div>
+
+            <!-- Right Security & Architecture Screenshot -->
+            <div class="screenshot-frame" onclick="openLightbox('images/s10.png', 'Enterprise Architecture, Multitenancy & Security Controls')">
+              <div class="screenshot-badge">🛡️ SECURITY & RBAC 🔍</div>
+              <img src="images/s10.png" alt="Enterprise Security & White-Label Customization UI">
+            </div>
+          </div>
+        </div>
+
+        <div class="mini-flow"><span>Tenant Isolation</span><b>+</b><span>Role Permissions</span><b>+</b><span>Audit Trails</span><b>+</b><span>Brand Controls</span></div>
+
+        <div class="slide-footer">
+          <span>Tenant Isolation · Role Permissions · Audit Trails · Brand Controls</span>
+          <span>Slide 10 / 13</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 11: PLATFORM COVERAGE, DASHBOARDS & CONFIGURATION -->
+      <div class="slide-content">
+        <div class="slide-header">
+          <span class="slide-badge">🧭 PLATFORM AT A GLANCE // BUILT AROUND YOUR ORGANIZATION</span>
+          <h1 class="slide-title">One Platform. Role-Based Views. Configurable Rules.</h1>
+          <p class="slide-subtitle">Configure the policies, people, and workflows that make your organization unique</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="metric-strip">
+            <div><strong>8</strong><small>DASHBOARD LAYOUTS</small></div>
+            <div><strong>11</strong><small>ROLE / ACCESS PROFILES</small></div>
+            <div><strong>13</strong><small>SETTINGS GROUPS</small></div>
+            <div><strong>46</strong><small>SETTINGS ENTRIES</small></div>
+          </div>
+
+          <div class="platform-overview mt-3">
+            <section class="overview-panel">
+              <span class="overview-count">Role-aware</span>
+              <h3>Dashboards for the people doing the work</h3>
+              <p>Eight reusable dashboard layouts serve 11 role and access profiles, from employees and team leads to department heads, HR, payroll, organization admins, and the platform owner.</p>
+              <p class="mt-2">People see the work relevant to their scope: self-service and payslips, team attendance and approvals, payroll cycles, organization controls, or tenant operations.</p>
+            </section>
+
+            <section class="overview-panel">
+              <span class="overview-count">13 groups · 46 entries</span>
+              <h3>Organization settings you can tailor</h3>
+              <p>Attendance & shifts · salary rules · company structure & holidays · employee IDs · payments · business identity · admin account & SMS · documents · users & roles · sales incentives · devices & kiosk · branding · integrations.</p>
+              <p class="mt-2">Examples: geofences, QR/mobile punch rules, split shifts, overtime, pay periods, salary templates, access rights, bank exports, logos, and Tally integration. Some entries link to their related workspace.</p>
+            </section>
+
+            <section class="overview-panel">
+              <span class="overview-count">Connected workflows</span>
+              <h3>Features that help teams work together</h3>
+              <ul>
+                <li>People, departments, branches, shifts, attendance, leave, and expenses</li>
+                <li>Recruitment, onboarding, documents, assets, loans, and employee exits</li>
+                <li>Payroll, payouts, statutory calculations, performance, and training</li>
+                <li>Industry workspaces, operational insights, and report catalogue</li>
+              </ul>
+              <p class="overview-note">Role permissions, organization-level data boundaries, approval steps, and policy controls help teams work consistently across locations while limiting access to the right people.</p>
+            </section>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>Configure for your policies · Assign role-based access · Scale across teams and branches</span>
+          <span>Slide 11 / 13</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 12: QUANTIFIABLE ROI & BUSINESS IMPACT (s11.png) -->
+      <div class="slide-content">
+        <div class="slide-header">
+          <span class="slide-badge">📈 BUSINESS IMPACT // PROVEN METRICS</span>
+          <h1 class="slide-title">Quantifiable Return on Investment (ROI)</h1>
+          <p class="slide-subtitle">Measurable time savings and direct payroll recovery in the first 30 days</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-split">
+            <!-- Left 4 Stat Boxes -->
+            <div class="grid-2x2">
+              <div class="hud-card tilt-card text-center" data-tilt>
+                <div class="laser-scan"></div>
+                <div class="stat-number">85%</div>
+                <p><strong>Faster Payroll</strong><br>Cut payroll cycle from 5 days to under 2 hours.</p>
+                <span class="click-tag">Explore ↗</span>
+              </div>
+
+              <div class="hud-card tilt-card text-center" data-tilt>
+                <div class="laser-scan"></div>
+                <div class="stat-number">100%</div>
+                <p><strong>Anti-Proxy</strong><br>Eliminate buddy punching and time leakage.</p>
+                <span class="click-tag">Explore ↗</span>
+              </div>
+
+              <div class="hud-card tilt-card text-center" data-tilt>
+                <div class="laser-scan"></div>
+                <div class="stat-number">0%</div>
+                <p><strong>Penalties</strong><br>Automated PF, ESI & TDS prevent audit fines.</p>
+                <span class="click-tag">Explore ↗</span>
+              </div>
+
+              <div class="hud-card tilt-card text-center" data-tilt>
+                <div class="laser-scan"></div>
+                <div class="stat-number">90%</div>
+                <p><strong>Ticket Reduction</strong><br>Employee Self-Service handles payslips & leave.</p>
+                <span class="click-tag">Explore ↗</span>
+              </div>
+            </div>
+
+            <!-- Right ROI Screenshot -->
+            <div class="screenshot-frame" onclick="openLightbox('images/s11.png', 'Quantifiable ROI: Payroll Time Savings & Cost Recovery')">
+              <div class="screenshot-badge">📊 ROI METRICS UI 🔍</div>
+              <img src="images/s11.png" alt="Quantifiable Business ROI Dashboard">
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-strip">
+          <div><strong>85%</strong><small>FASTER PAYROLL</small></div>
+          <div><strong>3-5%</strong><small>PAYROLL LEAKAGE SAVED</small></div>
+          <div><strong>90%</strong><small>FEWER ROUTINE TICKETS</small></div>
+          <div><strong>1</strong><small>CONNECTED PLATFORM</small></div>
+        </div>
+
+        <div class="slide-footer">
+          <span>VetanSetu Pitch Deck · Measurable Customer Impact</span>
+          <span>Slide 12 / 13</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 13: CALL TO ACTION & Q&A (s12.png) -->
+      <div class="slide-content">
+        <div class="slide-header">
+          <span class="slide-badge">🚀 NEXT STEPS // GET STARTED TODAY</span>
+          <h1 class="slide-title">Transform Your Workforce Operations Today</h1>
+          <p class="slide-subtitle">Partner with VetanSetu for modern, automated, and compliant HR & Payroll</p>
+        </div>
+
+        <div class="slide-body">
+          <div class="grid-split">
+            <!-- Left Info -->
+            <div class="flex flex-col gap-3">
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>🎯 Schedule a 15-Minute Live Custom Demo</h4>
+                <p>See your actual shift rules, branch hierarchy, and salary structure configured live in VetanSetu with our solutions architect.</p>
+                <span class="click-tag">Book Demo ↗</span>
+              </div>
+
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>🚀 30-Day Guided Enterprise Trial</h4>
+                <p>Web console, mobile app, and a catalogue of 180 report definitions—with guided onboarding and data migration support.</p>
+                <span class="click-tag">Start Trial ↗</span>
+              </div>
+
+              <div class="hud-card tilt-card" data-tilt>
+                <div class="laser-scan"></div>
+                <h4>📞 Connect With Our Leadership Team</h4>
+                <p class="mt-1">
+                  🌐 <strong>Website:</strong> www.vetansetu.com &nbsp;|&nbsp; 
+                  📧 <strong>Email:</strong> solutions@vetansetu.com / platform@vetansetu.com &nbsp;|&nbsp; 
+                  📞 <strong>Direct Line:</strong> +91 [Your Contact Number]
+                </p>
+                <div class="mt-3 flex gap-2">
+                  <button class="btn-accent" onclick="launchMovieCredits()">🎬 Watch Cinematic Finale</button>
+                  <button onclick="showSlide(0)">↺ Replay Slide 1</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right CTA & Demo Screenshot -->
+            <div class="screenshot-frame" onclick="openLightbox('images/s12.png', 'Book a Live Demo & Start Your 30-Day Enterprise Trial')">
+              <div class="screenshot-badge">🚀 GET STARTED 🔍</div>
+              <img src="images/s12.png" alt="Transform Workforce Operations Today">
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>VetanSetu Enterprise Platform · Thank You! Let's Open for Q&A</span>
+          <span>Slide 13 / 13</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Speaker Notes HUD Display -->
+    <div class="speaker-notes-box" id="speakerNotes">
+      <strong>🎙️ Speaker Notes <span class="inline-flex items-center rounded-full bg-yellow-400/20 px-2 py-0.5 text-[10px] font-bold text-yellow-300">PRESENTER VIEW</span>:</strong>
+      <span id="speakerNotesText" class="block mt-1">Loading notes...</span>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX IMAGE ZOOM MODAL -->
+  <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox(event)">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+      <img id="lightboxImg" src="" alt="Enlarged Screenshot">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+  </div>
+
+  <!-- MOVIE-LIKE CINEMATIC END CREDITS OVERLAY -->
+  <div class="credits-overlay" id="creditsOverlay">
+    <div class="starfield"></div>
+    
+    <div class="credits-hud">
+      <button onclick="toggleCreditsSpeed()" id="creditsSpeedBtn">⚡ 1x Speed</button>
+      <button onclick="toggleCreditsPause()" id="creditsPauseBtn">⏸ Pause</button>
+      <button class="btn-accent" onclick="closeMovieCredits()">✕ Exit Credits (ESC)</button>
+    </div>
+
+    <div class="credits-viewport">
+      <div class="credits-crawl" id="creditsCrawl">
+        <h2>A VETANSETU PRODUCTION</h2>
+        <p class="credit-lead">UNIFIED WORKFORCE MANAGEMENT PLATFORM</p>
+        <p>Architected & Engineered for the Next Generation of Enterprises</p>
+
+        <h3>EXECUTIVE ARCHITECTURE</h3>
+        <p class="credit-lead">VetanSetu Platform Core</p>
+        <p>Enterprise SaaS · Multi-Tenant Monolith</p>
+
+        <h3>BACKEND & DATA ENGINE</h3>
+        <p>Node.js & Express API Gateway</p>
+        <p>MySQL 8 Relational Schema Engine (30+ Subsystems)</p>
+        <p>Redis Asynchronous Job Queue · BullMQ</p>
+        <p>PM2 Production Cluster Topology</p>
+
+        <h3>FRONTEND & USER INTERFACE</h3>
+        <p>React 18 · TypeScript · Vite</p>
+        <p>TailwindCSS · shadcn UI Design System</p>
+        <p>Lucide Iconography · 3D Parallax HUD</p>
+
+        <h3>MOBILE DIVISION (ESS)</h3>
+        <p>Flutter SDK (iOS & Android)</p>
+        <p>High-Precision GPS Geofencing Engine</p>
+        <p>Anti-Spoofing & Fake Location Detection</p>
+        <p>Encrypted Dynamic QR Scanner</p>
+        <p>Device Hardware UUID Binding & Risk Audit</p>
+
+        <h3>STARRING PLATFORM MODULES</h3>
+        <p>The Money Path (Maker-Checker Payroll)</p>
+        <p>100% Indian Statutory Engine (PF, ESI, PT, TDS)</p>
+        <p>180 Report Definitions Across 12 Domains</p>
+        <p>Recruitment ATS Kanban Pipeline</p>
+        <p>Paperless KYC Onboarding Wizard</p>
+        <p>Asset & Employee Loan Workbench</p>
+        <p>Exit Clearance & Full and Final (FnF) Workflow</p>
+        <p>White-Label Theme Engine & cPanel Webmail</p>
+
+        <h3>INDUSTRY SPECIALIZATIONS</h3>
+        <p>Healthcare & Hospital Ward Rostering</p>
+        <p>Manufacturing & Industrial Plant Shifts</p>
+        <p>Retail Multi-Branch Location Punch</p>
+        <p>Corporate IT & KRA/KPI Performance Appraisals</p>
+
+        <h3>SECURITY & ZERO-TRUST</h3>
+        <p>Row-Level Tenant Isolation (`company_id`)</p>
+        <p>3-Tier Policy-Based RBAC</p>
+        <p>OTPless Passwordless Authentication & Google SSO</p>
+        <p>Immutable Financial Snapshot Locking</p>
+
+        <h3>SPECIAL THANKS</h3>
+        <p>The Engineering & DevOps Teams</p>
+        <p>HR Leaders, Payroll Managers & Compliance Officers</p>
+        <p>And Every Employee Empowered by VetanSetu</p>
+
+        <h2 style="margin-top: 60px;">VETANSETU (वेतनसेतु)</h2>
+        <p class="credit-lead">THE BRIDGE TO MODERN WORKFORCE EXCELLENCE</p>
+        <p style="margin-top: 20px; font-size: 13px; color: #64748b;">© 2026 VETANSETU PLATFORM. ALL RIGHTS RESERVED.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD DETAIL MODAL -->
+  <div class="detail-backdrop" id="cardDetailBackdrop" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <section class="detail-modal" style="position:relative">
+      <button class="detail-close" id="detailClose" aria-label="Close details" title="Close">&times;</button>
+      <header class="detail-hero">
+        <div class="detail-kicker" id="detailKicker">VETANSETU FEATURE DEEP DIVE</div>
+        <h2 class="detail-title" id="detailTitle">Feature details</h2>
+        <p class="detail-summary" id="detailSummary"></p>
+        <div class="detail-flow" id="detailFlow"></div>
+      </header>
+      <div class="detail-content">
+        <div class="detail-grid" id="detailGrid"></div>
+        <div class="detail-note" id="detailNote"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    /* =========================================================
+       AUDIO SYNTHESIZER (WEB AUDIO API - PURE NATIVE SOUND FX)
+       ========================================================= */
+    let audioCtx = null;
+    let sfxEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playSound(type) {
+      if (!sfxEnabled) return;
+      try {
+        initAudio();
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+
+        if (type === 'slide') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(420, now);
+          osc.frequency.exponentialRampToValueAtTime(780, now + 0.12);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.start(now);
+          osc.stop(now + 0.12);
+        } else if (type === 'card') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(880, now);
+          osc.frequency.setValueAtTime(1100, now + 0.04);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        } else if (type === 'click') {
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(280, now);
+          osc.frequency.exponentialRampToValueAtTime(80, now + 0.08);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        }
+      } catch (e) {
+        // Audio policy or silent fallback
+      }
+    }
+
+    function toggleSound() {
+      sfxEnabled = !sfxEnabled;
+      const btn = document.getElementById('soundToggleBtn');
+      btn.textContent = sfxEnabled ? '🔊 SFX ON' : '🔇 SFX MUTED';
+      if (sfxEnabled) playSound('click');
+    }
+
+    /* =========================================================
+       SLIDE NAVIGATION CONTROLLER (ALL 12 SLIDES)
+       ========================================================= */
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide-content');
+    const indicator = document.getElementById('slideIndicator');
+    const notesText = document.getElementById('speakerNotesText');
+    const progressFill = document.getElementById('progressFill');
+    const dotsContainer = document.getElementById('slideDots');
+    const previousButton = document.getElementById('prevSlideBtn');
+    const nextButton = document.getElementById('nextSlideBtn');
+    let slideTransitionTimer;
+
+    const speakerNotes = [
+      "Welcome everyone. Today, I'm thrilled to present VetanSetu — an all-in-one Enterprise HR, Indian Payroll, and Mobile Workforce platform connecting recruitment, attendance, salary disbursement, and full & final exit settlements.",
+      "Most growing companies face extreme administrative fatigue. Every month end is a scramble of missing biometric punches, manual Excel formulas, and anxiety over PF/ESI late filing penalties. We solve this completely.",
+      "VetanSetu acts as the unified bridge. It links the employee's phone directly to HR's approval workbench and the company's financial ledgers. Every punch and salary deduction flows through an automated pipeline.",
+      "Our attendance engine is engineered to eliminate time theft. With our Flutter mobile app, punches are verified using high-precision GPS geofencing and anti-spoofing algorithms. Each device is locked to the employee's hardware UUID.",
+      "Our payroll 'Money Path' guarantees accuracy and financial integrity. Attendance and approved leaves automatically calculate gross and net earnings, locked with Maker-Checker security before generating bank NEFT files and Tally vouchers.",
+      "VetanSetu is tailored for the Indian regulatory landscape. From automated PF ECR generation to multi-state Professional Tax and Form 16 processing for both Old and New Tax regimes, we eliminate compliance risk completely.",
+      "VetanSetu manages the complete employee lifecycle: job postings on your careers portal, Kanban candidate tracking, digital document vaults, asset & loan tracking, and automated Full & Final settlements upon exit.",
+      "We recognize that a manufacturing plant operates very differently from a hospital or a tech firm. VetanSetu includes dedicated vertical workspaces handling ward rosters in hospitals and contractor overtime compliance in manufacturing plants.",
+      "Leadership needs useful, permission-aware information. The product catalogue defines 180 reports across 12 domains, with CSV, XLSX, and PDF export options. Actual report availability depends on the organization's enabled modules and implemented reports.",
+      "Security and customization are at the core of VetanSetu. With strict row-level tenant isolation, your data is completely separated. Furthermore, our white-label engine allows clients to brand the platform with their own corporate colors and logos.",
+      "VetanSetu provides eight dashboard layouts for eleven role and access profiles, plus 13 settings groups with 46 settings entries. These cover attendance, shifts, salary rules, payments, organization identity, user access, devices, branding, and integrations. Role-based views, organization-level data boundaries, and approval controls help teams work consistently across branches; the exact features available depend on enabled modules and permissions.",
+      "The ROI of VetanSetu is clear and quantifiable. By eliminating proxy punches, automating statutory tax calculations, and slashing payroll processing time by 85%, VetanSetu pays for itself almost immediately.",
+      "Thank you for your time and attention. We would love to set up a 15-minute customized demonstration using your company's shift schedules and payroll structure. Let's open the floor for any questions!"
+    ];
+
+    // Build Quick Jump Dots
+    dotsContainer.innerHTML = '';
+    slides.forEach((slide, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'slide-dot' + (i === 0 ? ' active' : '');
+      dot.title = `Slide ${i + 1}`;
+      dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      dot.setAttribute('aria-current', i === 0 ? 'step' : 'false');
+      dot.onclick = () => showSlide(i);
+      dotsContainer.appendChild(dot);
+    });
+
+    function showSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= slides.length) index = slides.length - 1;
+      const slideChanged = index !== currentSlide;
+      const previousSlide = currentSlide;
+      const direction = index > previousSlide ? 'forward' : 'backward';
+      const transitionClasses = [
+        'transition-in-forward',
+        'transition-in-backward',
+        'transition-out-forward',
+        'transition-out-backward'
+      ];
+      window.clearTimeout(slideTransitionTimer);
+      slides.forEach((slide) => slide.classList.remove(...transitionClasses));
+      if (slideChanged) {
+        slides[previousSlide]?.classList.add(`transition-out-${direction}`);
+        slides[index].classList.add(`transition-in-${direction}`);
+      }
+      currentSlide = index;
+
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === currentSlide);
+        s.setAttribute('aria-hidden', i === currentSlide ? 'false' : 'true');
+        s.inert = i !== currentSlide;
+      });
+
+      indicator.textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+      notesText.textContent = speakerNotes[currentSlide] || "VetanSetu presentation slide.";
+      progressFill.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+      previousButton.disabled = currentSlide === 0;
+      nextButton.disabled = currentSlide === slides.length - 1;
+      
+      document.querySelectorAll('.slide-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+        dot.setAttribute('aria-current', i === currentSlide ? 'step' : 'false');
+      });
+
+      if (slideChanged) {
+        slideTransitionTimer = window.setTimeout(() => {
+          slides.forEach((slide) => slide.classList.remove(...transitionClasses));
+        }, 450);
+        playSound('slide');
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        showSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        showSlide(currentSlide - 1);
+      }
+    }
+
+    async function toggleFullScreen() {
+      const deck = document.querySelector('.deck-container');
+      try {
+        if (!document.fullscreenElement) {
+          await deck.requestFullscreen();
+        } else {
+          await document.exitFullscreen();
+        }
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+        return;
+      }
+      updateFullscreenButton();
+    }
+
+    function updateFullscreenButton() {
+      const fullscreenButton = document.querySelector('.top-bar .btn-accent');
+      const isFullscreen = Boolean(document.fullscreenElement);
+      fullscreenButton.textContent = isFullscreen ? '⛶ Exit Fullscreen' : '⛶ Fullscreen';
+      fullscreenButton.setAttribute('aria-label', isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen');
+    }
+
+    // Keyboard listener
+    document.addEventListener('keydown', (e) => {
+      if (document.getElementById('creditsOverlay').classList.contains('active')) {
+        if (e.key === 'Escape') closeMovieCredits();
+        return;
+      }
+      if (document.getElementById('lightboxModal').classList.contains('active')) {
+        if (e.key === 'Escape') closeLightbox();
+        return;
+      }
+      if (document.getElementById('cardDetailBackdrop').classList.contains('open')) {
+        if (e.key === 'Escape') closeCardDetails();
+        return;
+      }
+
+      if (e.target instanceof HTMLElement && (
+        e.target.isContentEditable ||
+        e.target.matches('input, textarea, select, [role="slider"]')
+      )) return;
+      if (e.code === 'Space' && e.target instanceof HTMLElement &&
+        e.target.closest('button, a, [role="button"]')) return;
+
+      if (e.key === 'ArrowRight' || e.code === 'Space') {
+        if (e.code === 'Space') e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullScreen();
+      }
+    });
+
+    document.querySelectorAll('.slide-content').forEach((slide, i) => {
+      slide.setAttribute('aria-hidden', i === 0 ? 'false' : 'true');
+      slide.inert = i !== 0;
+    });
+    previousButton.disabled = true;
+    nextButton.disabled = slides.length <= 1;
+    progressFill.style.width = `${100 / slides.length}%`;
+
+    document.querySelectorAll('.screenshot-frame[onclick], .ribbon-item[onclick]').forEach((item) => {
+      const image = item.querySelector('img');
+      item.setAttribute('role', 'button');
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('aria-label', item.classList.contains('screenshot-frame')
+        ? `Enlarge ${image?.alt || 'image'}`
+        : `Open ${item.querySelector('.ribbon-tag')?.textContent || image?.alt || 'slide'}`);
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          item.click();
+        }
+      });
+    });
+
+    document.addEventListener('fullscreenchange', updateFullscreenButton);
+
+    /* =========================================================
+       3D GAME-LIKE HOVER PARALLAX TILT EFFECT
+       ========================================================= */
+    document.querySelectorAll('.tilt-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      });
+
+      card.addEventListener('mouseenter', () => {
+        playSound('card');
+      });
+    });
+
+    /* =========================================================
+       BEFORE / AFTER COMPARISON SLIDER (SLIDE 2)
+       ========================================================= */
+    const sliderContainer = document.getElementById('compareSlider');
+    const afterSide = document.getElementById('compareAfter');
+    const divider = document.getElementById('compareDivider');
+    let isDragging = false;
+
+    function updateSlider(clientX) {
+      if (!sliderContainer) return;
+      const rect = sliderContainer.getBoundingClientRect();
+      let pos = (clientX - rect.left) / rect.width;
+      if (pos < 0.05) pos = 0.05;
+      if (pos > 0.95) pos = 0.95;
+
+      const percentage = pos * 100;
+      afterSide.style.clipPath = `polygon(${percentage}% 0, 100% 0, 100% 100%, ${percentage}% 100%)`;
+      divider.style.left = `${percentage}%`;
+    }
+
+    if (sliderContainer) {
+      sliderContainer.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        updateSlider(e.clientX);
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        updateSlider(e.clientX);
+      });
+      window.addEventListener('mouseup', () => { isDragging = false; });
+      sliderContainer.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        updateSlider(e.touches[0].clientX);
+      });
+      window.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        updateSlider(e.touches[0].clientX);
+      });
+      window.addEventListener('touchend', () => { isDragging = false; });
+    }
+
+    /* =========================================================
+       EXPAND / COLLAPSE ACCORDIONS
+       ========================================================= */
+    function toggleExpand(panelId) {
+      const panel = document.getElementById(panelId);
+      const icon = document.getElementById(panelId + 'Icon');
+      const isOpen = panel.classList.contains('open');
+
+      panel.classList.toggle('open');
+      if (icon) {
+        icon.textContent = isOpen ? '▼' : '▲';
+      }
+      playSound('click');
+    }
+
+    /* =========================================================
+       LIGHTBOX ZOOM VIEWER
+       ========================================================= */
+    const lightboxModal = document.getElementById('lightboxModal');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+
+    function openLightbox(src, caption) {
+      lightboxImg.src = src;
+      lightboxCaption.textContent = caption || 'VetanSetu UI Screenshot';
+      lightboxModal.classList.add('active');
+      playSound('click');
+    }
+
+    function closeLightbox() {
+      lightboxModal.classList.remove('active');
+      playSound('click');
+    }
+
+    /* =========================================================
+       MOVIE-LIKE END CREDITS ROLL
+       ========================================================= */
+    const creditsOverlay = document.getElementById('creditsOverlay');
+    const creditsCrawl = document.getElementById('creditsCrawl');
+    let creditsPaused = false;
+    let creditsSpeed = 1;
+
+    function launchMovieCredits() {
+      creditsOverlay.classList.add('active');
+      creditsPaused = false;
+      creditsSpeed = 1;
+      creditsCrawl.style.animationPlayState = 'running';
+      creditsCrawl.style.animationDuration = '38s';
+      playSound('click');
+    }
+
+    function closeMovieCredits() {
+      creditsOverlay.classList.remove('active');
+      playSound('click');
+    }
+
+    function toggleCreditsPause() {
+      creditsPaused = !creditsPaused;
+      creditsCrawl.style.animationPlayState = creditsPaused ? 'paused' : 'running';
+      document.getElementById('creditsPauseBtn').textContent = creditsPaused ? '▶ Play' : '⏸ Pause';
+      playSound('click');
+    }
+
+    function toggleCreditsSpeed() {
+      creditsSpeed = creditsSpeed === 1 ? 2 : (creditsSpeed === 2 ? 4 : 1);
+      const duration = creditsSpeed === 1 ? 38 : (creditsSpeed === 2 ? 19 : 9.5);
+      creditsCrawl.style.animationDuration = `${duration}s`;
+      document.getElementById('creditsSpeedBtn').textContent = `⚡ ${creditsSpeed}x Speed`;
+      playSound('click');
+    }
+
+    /* =========================================================
+       CARD DETAIL DEEP DIVE MODAL
+       ========================================================= */
+    const detailBackdrop = document.getElementById('cardDetailBackdrop');
+    const detailTitle = document.getElementById('detailTitle');
+    const detailSummary = document.getElementById('detailSummary');
+    const detailKicker = document.getElementById('detailKicker');
+    const detailFlow = document.getElementById('detailFlow');
+    const detailGrid = document.getElementById('detailGrid');
+    const detailNote = document.getElementById('detailNote');
+
+    function makeDetailPanel(heading, body, icon = '✦') {
+      const panel = document.createElement('section');
+      panel.className = 'detail-panel';
+      const h = document.createElement('h4');
+      h.textContent = icon + '  ' + heading;
+      panel.appendChild(h);
+      if (Array.isArray(body)) {
+        const ul = document.createElement('ul');
+        body.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          ul.appendChild(li);
+        });
+        panel.appendChild(ul);
+      } else {
+        const p = document.createElement('p');
+        p.textContent = body;
+        panel.appendChild(p);
+      }
+      return panel;
+    }
+
+    function inferDetail(title, summary, slideTitle) {
+      const t = (title + ' ' + summary + ' ' + slideTitle).toLowerCase();
+      let steps = ['Configure policy', 'Capture activity', 'Review exceptions', 'Approve & report'];
+      let benefits = ['Centralizes records in real time', 'Reduces administrative cross-checking', 'Enforces multi-tier governance', 'Produces audit-ready exports'];
+      let how = 'The feature coordinates actions between employees, managers, and finance teams in one automated pipeline.';
+      let example = 'Example: An HR admin configures the rules, managers review exceptions, and authorized checkers lock the final result.';
+      let caution = 'Validated against active VetanSetu architecture (Node.js API + MySQL schemas + Flutter ESS).';
+
+      if (/attendance|punch|gps|geofence|qr|tracking|proxy|device|shift|roster/.test(t)) {
+        steps = ['Set Geofence & Shifts', 'Employee Punches in Flutter App', 'Verify GPS, Device UUID & Anti-Mock', 'Commit to Live Ledger'];
+        benefits = ['100% elimination of proxy attendance', 'Real-time 15-second tracking for field teams', 'Accurate overtime calculations', 'Touchless QR office access'];
+        how = 'GPS coordinates are checked against office boundaries using high-precision calculations while mock location apps are blocked at the device level.';
+        example = 'Example: A field sales executive punches in at BKC Hub; GPS accuracy is verified within 10 meters; the device UUID is confirmed, and the punch is logged live on OpenStreetMap.';
+        caution = 'Requires device location permission and administrator device binding approval.';
+      } else if (/payroll|salary|money path|neft|tally|loan emi|allowance|bonus|deduction|payout/.test(t)) {
+        steps = ['Sync Verified Attendance', 'Compute Gross, Taxes & Deductions', 'Maker-Checker Approval Review', 'Lock Snapshot & Export NEFT/Tally'];
+        benefits = ['Payroll cycle reduced from 5 days to 2 hours', 'Cryptographic locking prevents silent edits', 'Direct bank disbursement integration', 'Zero-error journal entries into Tally ERP'];
+        how = 'The Money Path unifies attendance, leaves, loans, and statutory deductions into an immutable preview committed by authorized leadership.';
+        example = 'Example: HR previews monthly earnings for 250 employees; Finance Director inspects variances, signs off on the run, and exports the HDFC NEFT bulk transfer file.';
+        caution = 'Once committed, the payroll snapshot is locked to preserve legal audit integrity.';
+      } else if (/pf|provident|esi|professional tax|tds|form 16|compliance|statutory|tax/.test(t)) {
+        steps = ['Employee Eligibility Audit', 'Statutory Wage Cap Evaluation', 'ECR & PT Slab Deduction', 'Form 16 & Tax Reconciliation'];
+        benefits = ['Zero late-filing statutory fines', 'Instant ECR file generation for EPFO portal', 'All Indian state PT slabs pre-configured', 'Dual-regime Income Tax compliance'];
+        how = 'Calculates EPS, EPF, EDLI, and ESI returns automatically, while giving employees a portal to declare 80C/80D investments.';
+        example = 'Example: An employee joins with ₹18,000 monthly wage; system auto-enrolls in ESI and PF with correct statutory employer/employee percentages.';
+        caution = 'Ensure company tax entity numbers (PAN/TAN/PF Code) are configured in settings.';
+      } else if (/recruit|ats|hire|onboard|kyc|asset|loan|exit|fnf|full & final/.test(t)) {
+        steps = ['Publish Job to Careers Page', 'Kanban Candidate Screening', 'Paperless KYC Onboarding', 'Asset Handover & Exit FnF'];
+        benefits = ['Structured hiring pipeline in one place', 'Zero paperwork for new hires', 'Automated asset allocation and recovery', 'Accurate gratuity and leave encashment calculations'];
+        how = 'Manages every transition of the employee from the day they apply online to their final no-dues exit clearance.';
+        example = 'Example: Candidate progresses from Screening to Tech Interview to Hired; clicking Hire automatically converts them into an employee and generates their onboarding link.';
+        caution = 'Sensitive identity documents are stored in secure tenant vaults with restricted HR permissions.';
+      }
+
+      return { steps, benefits, how, example, caution };
+    }
+
+    function openCardDetails(card) {
+      const title = card.querySelector('h4')?.innerText?.trim() || 'VetanSetu Feature';
+      const summary = card.querySelector('p')?.innerText?.trim() || 'Enterprise workforce capability.';
+      const slide = card.closest('.slide-content');
+      const slideTitle = slide?.querySelector('.slide-title')?.innerText || 'Platform Architecture';
+      const data = inferDetail(title, summary, slideTitle);
+
+      detailKicker.textContent = slide?.querySelector('.slide-badge')?.innerText || 'VETANSETU FEATURE DEEP DIVE';
+      detailTitle.textContent = title;
+      detailSummary.textContent = summary + ' ' + data.how;
+
+      detailFlow.replaceChildren();
+      data.steps.forEach((step, i) => {
+        if (i) {
+          const arrow = document.createElement('span');
+          arrow.textContent = '→';
+          arrow.style.color = '#facc15';
+          arrow.style.fontWeight = '900';
+          detailFlow.appendChild(arrow);
+        }
+        const chip = document.createElement('span');
+        chip.className = 'detail-step';
+        chip.textContent = step;
+        detailFlow.appendChild(chip);
+      });
+
+      detailGrid.replaceChildren(
+        makeDetailPanel('How It Operates', data.how, '⚡'),
+        makeDetailPanel('Key Enterprise Benefits', data.benefits, '✓'),
+        makeDetailPanel('Live Production Scenario', data.example, '◎'),
+        makeDetailPanel('Governance & Audit Checklist', [
+          'Verify tenant role and permission scope',
+          'Inspect automated calculation parameters',
+          'Confirm immutable audit event logged',
+          'Review output in live analytical reports'
+        ], '☷')
+      );
+
+      detailNote.textContent = data.caution;
+      detailBackdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      playSound('click');
+    }
+
+    function closeCardDetails() {
+      detailBackdrop.classList.remove('open');
+      document.body.style.overflow = '';
+      playSound('click');
+    }
+
+    document.querySelectorAll('.hud-card').forEach(card => {
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('aria-haspopup', 'dialog');
+      card.setAttribute('aria-label', `View details: ${card.querySelector('h4')?.innerText?.trim() || 'VetanSetu feature'}`);
+      card.addEventListener('click', (e) => {
+        if (!e.target.closest('button, a, input')) {
+          openCardDetails(card);
+        }
+      });
+      card.addEventListener('keydown', (e) => {
+        if ((e.key === 'Enter' || e.key === ' ') && e.target === card) {
+          e.preventDefault();
+          openCardDetails(card);
+        }
+      });
+    });
+
+    document.getElementById('detailClose').addEventListener('click', closeCardDetails);
+    detailBackdrop.addEventListener('click', (e) => {
+      if (e.target === detailBackdrop) closeCardDetails();
+    });
+
+    const deckContainer = document.querySelector('.deck-container');
+    [lightboxModal, creditsOverlay, detailBackdrop].forEach((overlay) => {
+      deckContainer.appendChild(overlay);
+    });
+
+    // Initialize deck
+    showSlide(0);
+  </script>
+</body>
+</html>
